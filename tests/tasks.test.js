@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.test" });
+
 import request from "supertest";
 import app from "../src/app.js";
 
@@ -56,6 +59,15 @@ describe("Task Routes", () => {
 
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  it("should delete a task", async () => {
+    const res = await request(app)
+      .delete(`/api/tasks/${taskId}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe("Task deleted");
   });
 
 });
